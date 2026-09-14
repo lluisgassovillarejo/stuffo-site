@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lluisgassovillarejo.github.io/stuffo-site/sitemap.xml
