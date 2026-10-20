@@ -33,12 +33,19 @@ if (typeof document !== 'undefined') {
       const rows = document.getElementById('schedule-rows'); rows.replaceChildren();
       r.schedule.forEach((amount, i) => { const tr=document.createElement('tr'); for (const text of [String(i+1),money(amount)]) { const td=document.createElement('td'); td.textContent=text; tr.append(td); } rows.append(tr); });
       document.getElementById('schedule').hidden = false;
+      return true;
     } catch (e) {
       output.textContent=e.message;
       document.getElementById('schedule').hidden = true;
+      return false;
     }
   };
-  form.addEventListener('submit', e => { e.preventDefault(); update(); });
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (update()) document.dispatchEvent(new CustomEvent('promotion:resource-used', {
+      detail: {resourceId:'sinking_fund_calculator', action:'calculate'}
+    }));
+  });
   form.addEventListener('input', () => { output.textContent='Amounts changed. Select Calculate to update your plan.'; document.getElementById('schedule').hidden=true; });
   update();
 }
